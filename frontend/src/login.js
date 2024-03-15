@@ -50,6 +50,9 @@ alert("Wrong Password");
                 <input onChange={handleInput} type='password' name='password' placeholder='Enter Password' className='form-control rounded-0'/>
                 {errors.password && <span className='text-danger'>{errors.password}</span>}
             </div>
+            <div style={{textAlign: 'right', paddingBottom: "20px"}}>
+            <Link to={"/reset"} >Forgot Password?</Link>
+            </div>
             <button type='submit' className='btn btn-success w-100 rounded-0'>Log In</button>
             <p>Don't have an account?</p>
             <Link to="/signup" className='btn btn-default border w-100 bg-light rounded-0 text-decoration-none'>Create Account</Link>

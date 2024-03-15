@@ -45,9 +45,10 @@ axios.defaults.withCredentials=true;
         auth ?
 <div className="d-flex justify-content-between">
     <h1>HOME</h1>
-    <button onClick={handleAuth} className="btn btn-primary">CheckAuth</button>
+    {/* <button onClick={handleAuth} className="btn btn-primary">CheckAuth</button> */}
     <Link to="/my_account" className="btn btn-success">My Account</Link>
-    <button onClick={handleLogout} className="btn btn-danger">Logout</button>
+    <Link to="/" onClick={handleLogout} className="btn btn-danger">Logout</Link>
+
 </div>
 :
 <div>

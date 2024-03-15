@@ -67,9 +67,15 @@ else if(res.data=="Success"){
                 {errors.address && <span className='text-danger'>{errors.address}</span>}
             </div>
             <div className='mb-3'>
-                <input type='text' name='phone' onChange={handleInput} placeholder='Phone No.' className='form-control rounded-0' />
+            <input type='text' name='phone' onChange={handleInput} onKeyDown={(e) => {
+                    if (!(e.key === "Backspace" || /\d/.test(e.key)) || (Text.length >= 10 && e.key !== "Backspace")) {
+                        e.preventDefault();
+                    }
+                }}
+                placeholder='Phone No.' className='form-control rounded-0' maxLength={10}/>
                 {errors.phone && <span className='text-danger'>{errors.phone}</span>}
             </div>
+
             <button type='submit' className='btn btn-success w-100 rounded-0'>Sign Up</button>
             <p>Already have an account?</p>
             <Link to="/" className='btn btn-default border w-100 bg-light rounded-0 text-decoration-none'>Log In</Link>
