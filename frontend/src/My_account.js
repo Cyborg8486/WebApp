@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 
@@ -11,7 +10,6 @@ function My_account() {
     var phone;
     var address;
 
-    // var [auth, setAuth] = useState(false);
     const [data, setData] = useState({});
 
     const fetchData=async(token)=>{
@@ -24,7 +22,7 @@ function My_account() {
       });
 
       const result = await response.json();
-    //   console.log(result.data[0]);
+
       setData(result.data[0]);
     }
 
@@ -54,7 +52,6 @@ function My_account() {
                                         </div>
                                     </div>
                         </div>
-                        {/* ffff */}
                     </>
                     :
                     <>

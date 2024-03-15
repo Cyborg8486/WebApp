@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import validation from './LoginValidation';
 import axios from 'axios';
-import { Navigate } from 'react-router-dom';
 
 function Login(){
 
@@ -11,7 +10,7 @@ function Login(){
         password: ''
     })
 const navigate= useNavigate();
-// axios.defaults.withCredentials= true;
+
     const [errors, setErrors]= useState({})
 
     const handleInput= (event)=>{

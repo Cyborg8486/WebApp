@@ -87,7 +87,7 @@ app.post('/login', (req, res) => {
                     email = req.body.email;
                     const id = data[0].id;
                     const token = jwt.sign({ id }, "jwtSecretKey", { expiresIn: '1h' }); // Set expiration to 1 hour
-                    // res.cookie('token', token, { httpOnly: true }); // Set cookie as HTTP-only
+                    
                     return res.json({ Login: true, token, data });
                 } else return res.json("Wrong Password");
             })
@@ -144,9 +144,7 @@ app.get('/logout', (req, res) => {
 
 app.get('/my_account', verifyJwt, (req, res) => {
     const sql = 'SELECT * FROM registration WHERE id= ?'
-    
-    // console.log(token);
-    // console.log("jshshshs");
+
     db.query(sql, [req.userId], (err, data) => {
         return res.json({ Status: "Success", data });
     })
@@ -182,18 +180,15 @@ app.post('/forgot-password', async (req, res) => {
     try {
         const sql = 'UPDATE registration SET password=? WHERE email=?';
         const chk = 'SELECT username FROM registration WHERE email = ?'
-        const password = Math.random()                        // Generate random number, eg: 0.123456
-            .toString(36)           // Convert  to base-36 : "0.4fzyo82mvyr"
+        const password = Math.random()   // Generate random number, eg: 0.123456
+            .toString(36)    // Convert  to base-36 : "0.4fzyo82mvyr"
             .slice(-8)// Cut off last 8 characters : "yo82mvyr"
 
 
         const enPassword = await bcrypt.hashSync(password, 10);
 
         db.query(chk, [req.body.email], (err, response) => {
-            // if (err) {
-            //     console.error('user not present');
-            //     return res.status(200).json({ message: 'Password is updated. Check your registered mail' })
-            // }
+           
             if (response.length) {
                 db.query(sql, [enPassword, req.body.email], (err, result) => {
                     if (err) {
@@ -230,10 +225,6 @@ app.post('/forgot-password', async (req, res) => {
             else return res.status(200).json({ message: 'Password is updated. Check your registered mail' })
 
         });
-
-        //   if (user) {
-
-        //   }
 
 
     } catch (error) {
