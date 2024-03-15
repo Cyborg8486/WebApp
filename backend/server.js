@@ -87,7 +87,7 @@ app.post('/login', (req, res) => {
                     email = req.body.email;
                     const id = data[0].id;
                     const token = jwt.sign({ id }, "jwtSecretKey", { expiresIn: '1h' }); // Set expiration to 1 hour
-                    res.cookie('token', token, { httpOnly: true }); // Set cookie as HTTP-only
+                    // res.cookie('token', token, { httpOnly: true }); // Set cookie as HTTP-only
                     return res.json({ Login: true, token, data });
                 } else return res.json("Wrong Password");
             })
@@ -98,7 +98,7 @@ app.post('/login', (req, res) => {
 })
 
 const verifyJwt = (req, res, next) => {
-    const token = req.cookies.token;
+    const token = req.header('access-token');
     if (!token) {
         return res.json({ Error: "Not authenticated" })
     } else {
@@ -144,10 +144,14 @@ app.get('/logout', (req, res) => {
 
 app.get('/my_account', verifyJwt, (req, res) => {
     const sql = 'SELECT * FROM registration WHERE id= ?'
+    
+    // console.log(token);
+    // console.log("jshshshs");
     db.query(sql, [req.userId], (err, data) => {
         return res.json({ Status: "Success", data });
     })
 })
+
 
 
 app.put('/update', (req, res) => {

@@ -1,70 +1,68 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 
 
-function My_account(){
+function My_account() {
+    const navigate = useNavigate();
+    var name;
+    var email;
+    var phone;
+    var address;
 
-var name;
-var email;
-var phone;
-var address;
+    // var [auth, setAuth] = useState(false);
+    const [data, setData] = useState({});
 
-var [auth, setAuth]= useState(false);
-const [data, setData] = useState({});
-
-useEffect(()=>{
-    axios.get('http://localhost:8081/my_account', {
-        headers:{
-            'access-token': localStorage.getItem("token")
+    const fetchData=async(token)=>{
+        const response = await fetch('http://localhost:8081/my_account', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'access-token' : localStorage.getItem("token")
         }
-    })
-    
-    .then(res=>{
-        
-        console.log(res.data.data[0].name)
-        if(res.data.Status==="Success"){
-            
-        name= res.data.data[0].name;
-        email= res.data.data[0].email;
-        phone= res.data.data[0].phone;
-        address= res.data.data[0].address;
-        
-        setAuth(true);
-        setData(res.data.data[0]);
-        
-        }else{
-            
-            setAuth(false)
-                console.log(res.data.Error);
-        }
-    })
-},[])
+      });
 
-    return(
-        <div className="container mt-4">
+      const result = await response.json();
+    //   console.log(result.data[0]);
+      setData(result.data[0]);
+    }
+
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        if(token)
+        fetchData(token);
+    else
+    navigate('/')
+    }, [])
+
+    return (
+        <>
             {
-            auth ?
-            
-            <div className="container">
-<h2 className="text-center">My Account </h2>
-<h5>Name: {data.name}</h5>
-<h5>Email: {data.email}</h5>
-<h5>Phone: {data.phone}</h5>
-<h5>Address: {data.address}</h5>
+                data ?
+                    <>
+                        <div className="container mt-4">
+                                    <div className="container">
+                                        <h2 className="text-center">My Account </h2>
+                                        <h5>Name: {data.name}</h5>
+                                        <h5>Email: {data.email}</h5>
+                                        <h5>Phone: {data.phone}</h5>
+                                        <h5>Address: {data.address}</h5>
 
-<div style={{paddingTop: "30px"}}>
-<Link to="/update" className="btn btn-success">Update details</Link>
-</div>
-        </div>
-        :
-        <div>
-            <h3>Not Authenticated</h3>
-            </div>
+                                        <div style={{ paddingTop: "30px" }}>
+                                            <Link to="/update" className="btn btn-success">Update details</Link>
+                                        </div>
+                                    </div>
+                        </div>
+                        {/* ffff */}
+                    </>
+                    :
+                    <>
+                        Loading..
+                    </>
             }
-        </div>
-        
+        </>
+
     )
 }
 
