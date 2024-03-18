@@ -5,11 +5,13 @@ import './ForgotPassword.css';
 function ForgotPassword() {
   
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === 'email') setEmail(value);
   };
 
   const handleEmailSubmit = async (e) => {
